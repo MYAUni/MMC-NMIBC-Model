@@ -923,13 +923,11 @@ axB.Position = panelBPosition;
 colorBar.Position = colorBarPosition;
 legendHandle.Position = legendPosition;
 
-zTicks = axB.ZTick;
-zTickLabels = string(axB.ZTickLabel);
-zeroZTick = find(abs(zTicks)<1e-12,1,'first');
-if ~isempty(zeroZTick) && numel(zTickLabels)==numel(zTicks)
-    zTickLabels(zeroZTick) = "";
-    axB.ZTickLabel = cellstr(zTickLabels);
-end
+zTicks = 0:2:floor(zUpper);
+zTickLabels = arrayfun(@(v) sprintf('%g',v), ...
+    zTicks,'UniformOutput',false);
+zTickLabels{1} = '';
+set(axB,'ZTick',zTicks,'ZTickLabel',zTickLabels);
 
 enableEditableFigureControls(fig,[axA;axB]);
 set(fig,'Visible','on');
